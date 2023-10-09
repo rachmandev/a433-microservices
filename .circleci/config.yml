@@ -3,7 +3,7 @@ jobs:
   build-app-karsajobs:
     working_directory: ~/go/src/github.com/dicodingacademy/karsajobs
     docker:
-      - image: cimg/go:1.17
+      - image: cimg/go:1.15.1
     steps:
       - checkout
       - setup_remote_docker:
@@ -14,7 +14,7 @@ jobs:
           command: docker build -t ghcr.io/rachmandev/karsajobs:latest .
       - run:
           name: Login to Github
-          command: docker login -u rachmandev -p dckr_pat_5SR7jWwo1rkBFWPQWjJ7Uij1nNM
+          command: docker login ghcr.io -u rachmandev -p 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
       - run:
           name: Push Image to Github Packages
           command: docker push ghcr.io/rachmandev/karsajobs:latest
