@@ -11,13 +11,13 @@ jobs:
           docker_layer_caching: true
       - run: 
           name: Build Docker Image
-          command: docker build -t ghcr.io/rachmandev/karsajobs:latest .
+          command: docker build -t rachmandev/karsajobs:latest .
       - run:
           name: Login to Github
-          command: docker login ghcr.io -u rachmandev -p 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
+          command: docker login -u rachmandev -p dckr_pat_DiYRgP-Eqg9NRmzFq3u-7FfypkE
       - run:
           name: Push Image to Github Packages
-          command: docker push ghcr.io/rachmandev/karsajobs:latest
+          command: docker push rachmandev/karsajobs:latest
   lint-docker:
     docker:
       - image: golangci/golangci-lint:v1.15
