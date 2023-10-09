@@ -1,7 +1,7 @@
 version: 2.1
 jobs:
   build-app-karsajobs:
-    working_directory: /go/src/github.com/dicodingacademy/karsajobs
+    working_directory: ~/go/src/github.com/dicodingacademy/karsajobs
     docker:
       - image: cimg/go:1.17
     steps:
@@ -27,7 +27,7 @@ jobs:
           name: Run the Linter
           command: golangci-lint run
   test-app:
-    working_directory: /go/src/github.com/dicodingacademy/karsajobs
+    working_directory: ~/go/src/github.com/dicodingacademy/karsajobs
     docker:
       - image: golang:1.21-alpine
     steps:
