@@ -12,6 +12,7 @@ jobs:
       - run: 
           name: Build Docker Image
           command: docker build -t ghcr.io/rachmandev/karsajobs:latest .
+      - run: export GITHUB_TOKEN=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
       - run:
           name: Login to Github Packages
           command: echo "$GITHUB_TOKEN" | docker login ghcr.io --username rachmandev --password-stdin
@@ -25,9 +26,9 @@ jobs:
       - checkout
       - run: 
           name: Run the Linter
-          command: golangci-lint run
+          command: golangci-lint
   test-app:
-    working_directory: ~/go/src/github.com/dicodingacademy/karsajobs
+    working_directory: /go/src/github.com/dicodingacademy/karsajobs
     docker:
       - image: golang:1.15-alpine
     steps:
