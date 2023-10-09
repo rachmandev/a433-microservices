@@ -10,7 +10,7 @@ jobs:
           version: 20.10.14
           docker_layer_caching: true
       - run: |
-          docker build -t CircleCI-Public/karsajobs:latest .
+          docker build -t ghcr.io/rachmandev/karsajobs:latest .
   lint:
     docker:
       - image: golangci/golangci-lint:v1.37-alpine
