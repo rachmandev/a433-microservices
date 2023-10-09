@@ -1,7 +1,7 @@
 version: 2.1
 jobs:
   build:
-    working_directory: /go/src/github.com/dicodingacademy/karsajobs
+    working_directory: ~/go/src/github.com/dicodingacademy/karsajobs
     docker:
       - image: cimg/go:1.17
     steps:
@@ -11,13 +11,13 @@ jobs:
           docker_layer_caching: true
       - run: |
           docker build -t CircleCI-Public/karsajobs:latest .
-  lint:
+  lint-dockerfile:
     docker:
       - image: golangci/golangci-lint:v1.37-alpine
     steps:
       - checkout
       - run: golangci-lint run
-  test:
+  test-app:
     working_directory: /go/src/github.com/dicodingacademy/karsajobs
     docker:
       - image: golang:1.15
