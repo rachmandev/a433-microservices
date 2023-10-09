@@ -17,8 +17,8 @@ jobs:
       - image: golangci/golangci-lint:latest-alpine
     steps:
       - checkout
-      - run: golangci-lint run
-  test:
+      - run: golangci-lint
+  test-app:
     working_directory: /go/src/github.com/dicodingacademy/karsajobs
     docker:
       - image: golang:1.15
@@ -30,4 +30,4 @@ workflows:
     jobs:
       - build
       - lint
-      - test
+      - test-app
