@@ -1,4 +1,9 @@
 version: 2.1
+
+executors:
+  docker:
+    docker:
+      - image: docker:stable
      
 jobs:
   build-app-karsajobs:
