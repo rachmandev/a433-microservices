@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       - image: golang:1.15-alpine
-    working_directory: /go/src/github.com/dicodingacademy/karsajobs
+        working_directory: /go/src/github.com/dicodingacademy/karsajobs
       - checkout
       # github.com/foo/bar/cmd/baz is the import path to your main module. Your
       # func main() should be in a file in the cmd/<binary name>/ directory. The
