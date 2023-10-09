@@ -11,13 +11,13 @@ jobs:
           docker_layer_caching: true
       - run: |
           docker build -t CircleCI-Public/karsajobs:latest .
-  lint-dockerfile:
+  lint:
     docker:
       - image: golangci/golangci-lint:v1.37-alpine
     steps:
       - checkout
       - run: golangci-lint run
-  test-app:
+  test:
     working_directory: /go/src/github.com/dicodingacademy/karsajobs
     docker:
       - image: golang:1.15
