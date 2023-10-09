@@ -22,17 +22,14 @@ jobs:
           name: Push Image to Github Packages
           command: docker push rachmandev/karsajobs-ui:latest
   dockerfile_lint:
-    executor:
-      hadolint_executor:
-          parameters:
-            docker:
-              - image: hadolint/hadolint:v2.12.0
+    executor: docker
     steps:
-      - run_dockerfile_lint
       - checkout
+      - setup_remote_docker
       - run:
-          name: Dockerfile Lint
-          command: hadolint Dockerfile    
+          name: Run hadolint
+          command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+ 
 workflows:
   build_lint_test:
     jobs:
