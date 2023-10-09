@@ -1,4 +1,10 @@
 version: 2.1
+
+executors:
+  docker:
+    docker:
+      - image: docker:stable
+
 jobs:
   build-app-karsajobs:
     working_directory: ~/go/src/github.com/dicodingacademy/karsajobs
@@ -13,19 +19,19 @@ jobs:
           name: Build Docker Image
           command: docker build -t rachmandev/karsajobs:latest .
       - run:
-          name: Login to Github
+          name: Login to Docker
           command: docker login -u rachmandev -p dckr_pat_DiYRgP-Eqg9NRmzFq3u-7FfypkE
       - run:
-          name: Push Image to Github Packages
+          name: Push Image to Docker Hub
           command: docker push rachmandev/karsajobs:latest
   lint-docker:
-    docker:
-      - image: golangci/golangci-lint:v1.15
+   executor: docker
     steps:
       - checkout
-      - run: 
-          name: Run the Linter
-          command: golangci-lint run
+      - setup_remote_docker
+      - run:
+          name: Run hadolint
+          command: docker run --rm --interactive hadolint/hadolint < Dockerfile
   test-app:
     working_directory: /go/src/github.com/dicodingacademy/karsajobs
     docker:
