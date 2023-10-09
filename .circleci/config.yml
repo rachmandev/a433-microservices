@@ -3,8 +3,8 @@ version: 2.1
 jobs:
   build:
     docker:
+    working_directory: /go/src/github.com/dicodingacademy/karsajobs
       - image: golang:1.15-alpine
-      working_directory: /go/src/github.com/dicodingacademy/karsajobs
       - checkout
       - go install github.com/foo/bar/cmd/baz 
   lint:
