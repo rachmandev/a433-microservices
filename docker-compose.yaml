@@ -1,0 +1,33 @@
+version: "3.7" # Saat ini kita menggunakan Docker Compose versi 3.7
+
+services: #service pada docker
+  item-db: #service dengan nama item-db
+    image: mongo:3 #untuk image database kita menggunkan database mongoDB
+    container_name: item-db #Kita set nama container database dengan nama item-db
+    ports: # port pada container
+      - "27017:27017" #kita set port default mongoDB di dalam container item-db & host
+    networks: #network untuk item-db
+      - item-app #kita set nama network dengan item-app
+    volumes: #volume pada docker
+      - app-db:/data/db #volume untuk container item-db
+    restart: on-failure #melakukan restart jika container error
+
+  item-app: #service dengan nama item-app
+    image: ghcr.io/rachmandev/item-app:v1 #kita menggunakan image yang telah di push ke gihtub package dan kita unduh kembali
+    container_name: item-app #kita set nama container dengan nama item-app
+    ports: #port pada container
+      - "80:8080" #kita set port untuk host 80 sedangkan port untuk container 8080
+    environment: #environment pada container
+      NODE_ENV: production #kita set mode environment pada container dengan production
+      DB_HOST: item-db #kita set host database dengan item-db
+    networks: #network untuk item-app
+      - item-app #kita set nama networknya sama dengan item-db agar saling terhubung dan bisa berkomunikasi
+    restart: on-failure #melakukan restart jika container error
+
+networks: #Network pada Docker
+  item-app: #kita Membuat network untuk item-app dan item-db
+    name: item-app #kita set nama network dengan nama item-app
+    driver: bridge #kita set tipe networknya adalah bridge
+
+volumes: #Volume pada docker
+  app-db: #membuat volume baru bernama item-db yang akan digunakan oleh MongoDB

@@ -1,0 +1,3 @@
+Link Docker Hub : https://hub.docker.com/r/rachmandev/item-app
+Link Repo Github : https://github.com/rachmandev/a433-microservices
+Clone Image dari Github Packages : docker pull ghcr.io/rachmandev/item-app:v1
