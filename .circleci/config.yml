@@ -27,12 +27,12 @@ jobs:
 
   lint-docker:
     executor: docker
-      steps:
-        - checkout
-        - setup_remote_docker
-        - run:
-            name: Run hadolint
-            command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Run hadolint
+          command: docker run --rm --interactive hadolint/hadolint < Dockerfile
 
   test-app:
     working_directory: /go/src/github.com/dicodingacademy/karsajobs
