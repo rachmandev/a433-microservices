@@ -32,16 +32,10 @@ jobs:
     executor: hadolint_executor
     steps:
       - run_dockerfile_lint
-
-commands:
-  run_dockerfile_lint:
-    steps:
       - checkout
       - run:
           name: Dockerfile Lint
-          command: |
-            hadolint Dockerfile
-    
+          command: hadolint Dockerfile    
 workflows:
   build_lint_test:
     jobs:
