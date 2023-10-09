@@ -1,9 +1,8 @@
 version: 2.1
-
 jobs:
   build:
-    docker:
     working_directory: /go/src/github.com/dicodingacademy/karsajobs
+    docker:
       - image: golang:1.15-alpine
       - checkout
       - go install github.com/foo/bar/cmd/baz 
@@ -14,13 +13,12 @@ jobs:
       - checkout
       - run: golangci-lint run
   test:
+    working_directory: /go/src/github.com/dicodingacademy/karsajobs
     docker:
       - image: golang:1.15
-    working_directory: /go/src/github.com/dicodingacademy/karsajobs
     steps:
       - checkout
       - run: go test -v -race ./...
-
 workflows:
   build_lint_test:
     jobs:
