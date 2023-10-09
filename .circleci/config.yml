@@ -1,0 +1,49 @@
+version: 2.1
+orbs:
+  linter: reactioncommerce/linter@0.0.1
+executors:
+      hadolint_executor:
+        parameters:
+          tag:
+            type: string
+            default: "v1.6.6-6-g254b4ff"
+          docker:
+            - image: hadolint/hadolint:v2.12.0
+jobs:
+  build-app-karsajobs:
+    working_directory: ~/app
+    docker:
+      - image: cimg/node:14.21
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+      - run: 
+          name: Build Docker Image
+          command: docker build -t rachmandev/karsajobs-ui:latest .
+      - run:
+          name: Login to Github
+          command: docker login -u rachmandev -p dckr_pat_DiYRgP-Eqg9NRmzFq3u-7FfypkE
+      - run:
+          name: Push Image to Github Packages
+          command: docker push rachmandev/karsajobs-ui:latest
+  dockerfile_lint:
+    executor: hadolint_executor
+    steps:
+      - run_dockerfile_lint
+
+commands:
+  run_dockerfile_lint:
+    steps:
+      - checkout
+      - run:
+          name: Dockerfile Lint
+          command: |
+            hadolint Dockerfile
+    
+workflows:
+  build_lint_test:
+    jobs:
+      - build-app-karsajobs
+      - dockerfile_lint
