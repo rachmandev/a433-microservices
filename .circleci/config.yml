@@ -1,7 +1,5 @@
 version: 2.1
-orbs:
-  linter: reactioncommerce/linter@0.0.1
-      
+     
 jobs:
   build-app-karsajobs:
     working_directory: ~/app
