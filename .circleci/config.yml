@@ -3,7 +3,7 @@ jobs:
   build-app-karsajobs:
     working_directory: ~/go/src/github.com/dicodingacademy/karsajobs
     docker:
-      - image: golang:1.15-alpine
+      - image: cimg/go:1.15.1
     steps:
       - checkout
       - setup_remote_docker:
