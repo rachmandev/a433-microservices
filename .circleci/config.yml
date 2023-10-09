@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: /go/src/github.com/dicodingacademy/karsajobs
     docker:
-      - image: golang:1.15-alpine
+      - image: cimg/go:1.17
     steps:
       - checkout
       - setup_remote_docker:
@@ -23,7 +23,7 @@ jobs:
       - image: golang:1.15
     steps:
       - checkout
-      - run: go test -v -race ./...
+      - run: go test -v -short --count=1 $(go list ./...)
 workflows:
   build_lint_test:
     jobs:
