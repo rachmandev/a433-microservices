@@ -4,6 +4,7 @@ jobs:
     working_directory: /go/src/github.com/dicodingacademy/karsajobs
     docker:
       - image: golang:1.15-alpine
+    steps:
       - checkout
       - go install github.com/foo/bar/cmd/baz 
   lint:
