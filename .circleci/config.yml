@@ -13,6 +13,9 @@ jobs:
           name: Build Docker Image
           command: docker build -t ghcr.io/rachmandev/karsajobs:latest .
       - run:
+          name: Login to Github
+          command: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+      - run:
           name: Push Image to Github Packages
           command: docker push ghcr.io/rachmandev/karsajobs:latest
   lint-docker:
