@@ -6,7 +6,11 @@ jobs:
       - image: golang:1.15-alpine
     steps:
       - checkout
-      - go install github.com/foo/bar/cmd/baz 
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+      - run: |
+          docker build -t CircleCI-Public/karsajobs:latest .
   lint:
     docker:
       - image: golangci/golangci-lint:v1.37-alpine
