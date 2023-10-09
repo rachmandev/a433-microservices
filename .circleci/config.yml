@@ -1,7 +1,7 @@
 version: 2.1
 jobs:
-  build:
-    working_directory: ~/go/src/github.com/dicodingacademy/karsajobs
+  build-app-karsajobs:
+    working_directory: /go/src/github.com/dicodingacademy/karsajobs
     docker:
       - image: cimg/go:1.17
     steps:
@@ -12,22 +12,30 @@ jobs:
       - run: 
           name: Build Docker Image
           command: docker build -t ghcr.io/rachmandev/karsajobs:latest .
-  lint:
+      - run:
+          name: Login to Github Packages
+          command: docker login ghcr.io --username rachmandev --password $GITHUB_TOKEN
+      - run:
+          name: Push Image to Github Packages
+          command: docker push ghcr.io/rachmandev/karsajobs:latest
+  lint-docker:
     docker:
       - image: golangci/golangci-lint:latest-alpine
     steps:
       - checkout
-      - run: golangci-lint
+      - run: 
+          name: Run the Linter
+          command: golangci-lint run
   test-app:
     working_directory: /go/src/github.com/dicodingacademy/karsajobs
     docker:
-      - image: golang:1.15
+      - image: golang:1.21-alpine
     steps:
       - checkout
       - run: go test -v -short --count=1 $(go list ./...)
 workflows:
   build_lint_test:
     jobs:
-      - build
-      - lint
+      - build-app-karsajobs
+      - lint-docker
       - test-app
