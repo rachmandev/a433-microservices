@@ -24,14 +24,16 @@ jobs:
       - run:
           name: Push Image to Docker Hub
           command: docker push rachmandev/karsajobs:latest
+
   lint-docker:
-   executor: docker
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Run hadolint
-          command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+    executor: docker
+      steps:
+        - checkout
+        - setup_remote_docker
+        - run:
+            name: Run hadolint
+            command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+
   test-app:
     working_directory: /go/src/github.com/dicodingacademy/karsajobs
     docker:
