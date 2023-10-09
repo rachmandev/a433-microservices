@@ -14,7 +14,7 @@ jobs:
           command: docker build -t ghcr.io/rachmandev/karsajobs:latest .
       - run:
           name: Login to Github
-          command: docker login ghcr.io -u rachmandev -p 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
+          command: docker login ghcr.io -u rachmandev -p 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
       - run:
           name: Push Image to Github Packages
           command: docker push ghcr.io/rachmandev/karsajobs:latest
