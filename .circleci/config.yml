@@ -6,7 +6,7 @@ executors:
       - image: docker:stable
      
 jobs:
-  build-app-karsajobs:
+  build-app-karsajobs-ui:
     working_directory: ~/app
     docker:
       - image: cimg/node:14.21
@@ -34,7 +34,7 @@ jobs:
           command: docker run --rm --interactive hadolint/hadolint < Dockerfile
  
 workflows:
-  build_lint_test:
+  build-app-karsajobs_dockerfile-lint:
     jobs:
       - build-app-karsajobs
       - dockerfile_lint
