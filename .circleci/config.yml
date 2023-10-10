@@ -24,7 +24,7 @@ jobs:
       - run:
           name: Push Image to Github Packages
           command: docker push rachmandev/karsajobs-ui:latest
-  dockerfile_lint:
+  dockerfile-lint:
     executor: docker
     steps:
       - checkout
@@ -34,7 +34,7 @@ jobs:
           command: docker run --rm --interactive hadolint/hadolint < Dockerfile
  
 workflows:
-  build-app-karsajobs_dockerfile-lint:
+  build-app-karsajobs-ui_dockerfile-lint:
     jobs:
       - build-app-karsajobs
       - dockerfile_lint
