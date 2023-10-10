@@ -25,7 +25,7 @@ jobs:
           name: Push Image to Docker Hub
           command: docker push rachmandev/karsajobs:latest
 
-  lint-docker:
+  dockerfile_lint:
     executor: docker
     steps:
       - checkout
@@ -40,10 +40,12 @@ jobs:
       - image: golang:1.15
     steps:
       - checkout
-      - run: go test -v -short --count=1 $(go list ./...)
+      - run: 
+          name: Run Test GO
+          command: go test -v -short --count=1 $(go list ./...)
 workflows:
-  build_lint_test:
+  build-app-karsajobs_dockerfile-lint_test-app:
     jobs:
       - build-app-karsajobs
-      - lint-docker
+      - dockerfile_lint
       - test-app
