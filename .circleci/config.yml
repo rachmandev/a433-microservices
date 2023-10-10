@@ -36,5 +36,5 @@ jobs:
 workflows:
   build-app-karsajobs-ui_dockerfile-lint:
     jobs:
-      - build-app-karsajobs
+      - build-app-karsajobs-ui
       - dockerfile_lint
