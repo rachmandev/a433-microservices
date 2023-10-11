@@ -5,6 +5,7 @@ on:
 
 jobs:
   build_and_publish:
+    name: Build and Publish app karsajobs-ui
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -15,7 +16,7 @@ jobs:
       - name: Push Image
         run: docker push ghcr.io/rachmandev/karsajobs-ui:latest
   lint:
-    name: Lint Hadoline
+    name: Run Lint Hadoline
     runs-on: ubuntu-latest
     container: pipelinecomponents/hadolint:0.10.1
     steps:
