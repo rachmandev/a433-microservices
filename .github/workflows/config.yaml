@@ -15,3 +15,11 @@ jobs:
         run: docker login --username rachmandev --password ${{ secrets.GithubToken }} ghcr.io
       - name: Push Image
         run: docker push ghcr.io/rachmandev/karsajobs-ui:latest
+  lint:
+    name: Lint Hadoline
+    runs-on: ubuntu-latest
+    container: pipelinecomponents/hadolint:0.10.1
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run hadolint
+        run: hadolint Dockerfile
