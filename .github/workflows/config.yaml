@@ -1,0 +1,16 @@
+name: Build and Lint Docker
+
+on:
+  push
+
+jobs:
+  build_publish_and_lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Image
+        run: docker build -t ghcr.io/rachmandev/karsajobs-ui:latest .
+      - name: Login to Github
+        run: docker login --username rachmandev --password ${{ secrets.GithubToken }} ghcr.io
+      - name: Push Image
+        run: docker push ghcr.io/rachmandev/karsajobs-ui:latest
