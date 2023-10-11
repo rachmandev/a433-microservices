@@ -1,40 +1,40 @@
-version: 2.1
+version: 2.1 # menggunakan versi 2.1
 
-executors:
-  docker:
+executors: # executors pada circleCI
+  docker: # Docker pada excecutors
     docker:
-      - image: docker:stable
+      - image: docker:stable # menggunakan Docker image versi stable
      
-jobs:
-  build-app-karsajobs-ui:
-    working_directory: ~/app
-    docker:
-      - image: cimg/node:14.21
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 20.10.14
-          docker_layer_caching: true
-      - run: 
-          name: Build Docker Image
-          command: docker build -t rachmandev/karsajobs-ui:latest .
-      - run:
-          name: Login to Github
-          command: docker login -u rachmandev -p dckr_pat_DiYRgP-Eqg9NRmzFq3u-7FfypkE
-      - run:
-          name: Push Image to Github Packages
-          command: docker push rachmandev/karsajobs-ui:latest
-  dockerfile-lint:
-    executor: docker
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Run hadolint
-          command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+jobs: # jobs untuk build lint
+  build-app-karsajobs-ui:  # jobs pertama untuk build-app-karsajobs-ui
+    working_directory: ~/app #workdir untuk app karsajobs-ui
+    docker: # Docker pada build-app-karsajobs
+      - image: cimg/node:14.21 # menggunakan image cimg/node dengan versi 14.21
+    steps: # steps untuk build-app-karsajobs
+      - checkout # melakukan checkout
+      - setup_remote_docker: # steps setup remote docker
+          version: 20.10.14 # menggunakan versi 20.10.14
+          docker_layer_caching: true # menggunakan docker_layer_caching dengan nilai true
+      - run: # run pada steps build
+          name: Build Docker Image # memberikan nama untuk perintah build image
+          command: docker build -t rachmandev/karsajobs-ui:latest . # melakukan build image
+      - run: # run pada steps build
+          name: Login to Github # memberikan nama untuk perintah Login ke github
+          command: docker login -u rachmandev -p dckr_pat_DiYRgP-Eqg9NRmzFq3u-7FfypkE # melakukan login ke github packages
+      - run: # run pada steps build
+          name: Push Image to Github Packages # memberikan nama untuk push image
+          command: docker push rachmandev/karsajobs-ui:latest # melakukan push image ke docker packages
+  dockerfile-lint:  # keduajobs  untuk build-app-karsajobs
+    executor: docker # menggunakan excecutors docker
+    steps: # steps untuk dockerfile_lint
+      - checkout # melakukan checkout
+      - setup_remote_docker # melakukan setup remote docker
+      - run: # run pada lint
+          name: Run hadolint # memberikan nama untuk docker hadolint
+          command: docker run --rm --interactive hadolint/hadolint < Dockerfile # menjalan hadolint
  
-workflows:
-  build-app-karsajobs-ui_dockerfile-lint:
-    jobs:
-      - build-app-karsajobs-ui
-      - dockerfile-lint
+workflows: # workflows pada circleCI
+  build-app-karsajobs-ui_dockerfile-lint: # memberikan nama untuk workflows sesuai jobs
+    jobs: # jobs untuk workflows
+      - build-app-karsajobs-ui # job workflows dari jobs build app karsajobs-ui
+      - dockerfile-lint # job workflows dari jobs dockerfile lint
