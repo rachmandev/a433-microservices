@@ -1,0 +1,33 @@
+name: Build, Lint and Test Docker
+
+on:
+  push
+
+jobs:
+  build_and_publish:
+    name: Build and Publish App Karsajobs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Image
+        run: docker build -t ghcr.io/rachmandev/karsajobs:latest .
+      - name: Login to Github
+        run: docker login --username rachmandev --password ${{ secrets.GithubToken }} ghcr.io
+      - name: Push Image
+        run: docker push ghcr.io/rachmandev/karsajobs:latest
+  lint:
+    name: Run Lint Hadoline
+    runs-on: ubuntu-latest
+    container: pipelinecomponents/hadolint:0.10.1
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run hadolint
+        run: hadolint Dockerfile
+
+  test:
+    name: Run Test App Karsajobs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test App Karsajobs
+        run: go test -v -short --count=1 $(go list ./...)
