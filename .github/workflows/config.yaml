@@ -1,25 +1,28 @@
-name: Build and Lint Docker
+# key name dengan name Build and Lint Docker untuk di tampilkan ke actions
+name: Build and Lint Docker 
 
+# key on dengan nilai push agar saat ada perubahan code action langsung run
 on:
   push
 
-jobs:
-  build_and_publish:
-    name: Build and Publish app karsajobs-ui
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build Image
-        run: docker build -t ghcr.io/rachmandev/karsajobs-ui:latest .
-      - name: Login to Github
-        run: docker login --username rachmandev --password ${{ secrets.GithubToken }} ghcr.io
-      - name: Push Image
-        run: docker push ghcr.io/rachmandev/karsajobs-ui:latest
-  lint:
-    name: Run Lint Hadoline
-    runs-on: ubuntu-latest
-    container: pipelinecomponents/hadolint:0.10.1
-    steps:
-      - uses: actions/checkout@v3
-      - name: Run hadolint
-        run: hadolint Dockerfile
+jobs: # key Jobs pada github action
+  build_and_publish_image: # job untuk workflows build_and_publish_image
+    name: Build and Publish app karsajobs-ui #key name dengan nilai Build and Publish app karsajobs-ui
+    runs-on: ubuntu-latest #github action / Docker berjalan pada OS ubuntu versi terbaru
+    steps: #step untuk jobs build_and_push_image
+      - uses: actions/checkout@v3 # key uses dengan nilai actions/checkout@v3 untuk menjalankan checkout dengan versi 3
+      - name: Build Image # key name dengan nilai Build image
+        run: docker build -t ghcr.io/rachmandev/karsajobs-ui:latest . # melakukan build docker image dengan tag ghcr.io/rachmandev/karsajobs-ui:latest
+      - name: Login to Github # key name dengan nilai Login to Github
+        run: docker login --username rachmandev --password ${{ secrets.GithubToken }} ghcr.io melakukan login ke github untuk push image
+      - name: Push Image # key name dengan nilai Push Image
+        run: docker push ghcr.io/rachmandev/karsajobs-ui:latest # melakukan push docker image ke github packages
+
+  lint: # job untuk workflows lint
+    name: Run Lint Hadoline #key name dengan nilai Run Lint Hadoline
+    runs-on: ubuntu-latest #github action / lint berjalan pada OS ubuntu versi terbaru
+    container: pipelinecomponents/hadolint:0.10.1 # key container menjalankan hadolint dengan versi 0.10.1
+    steps: # steps untuk lint
+      - uses: actions/checkout@v3 # key uses dengan nilai actions/checkout@v3 untuk menjalankan checkout dengan versi 3
+      - name: Run hadolint # key name dengan nilai Run Hadolin
+        run: hadolint Dockerfile # menjalankan hadolint Dockerfile
