@@ -1,51 +1,52 @@
-version: 2.1
+version: 2.1 # menggunakan versi 2.1
 
-executors:
-  docker:
-    docker:
-      - image: docker:stable
+executors: # executors pada circleCI
+  docker: # Docker pada excecutors
+    docker: 
+      - image: docker:stable # menggunakan Docker image versi stable
 
-jobs:
-  build-app-karsajobs:
-    working_directory: ~/go/src/github.com/dicodingacademy/karsajobs
-    docker:
-      - image: cimg/go:1.15.1
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 20.10.14
-          docker_layer_caching: true
-      - run: 
-          name: Build Docker Image
-          command: docker build -t rachmandev/karsajobs:latest .
-      - run:
-          name: Login to Docker
-          command: docker login -u rachmandev -p dckr_pat_DiYRgP-Eqg9NRmzFq3u-7FfypkE
-      - run:
-          name: Push Image to Docker Hub
-          command: docker push rachmandev/karsajobs:latest
+jobs: # jobs untuk build lint test
+  build-app-karsajobs: # jobs pertama untuk build-app-karsajobs
+    working_directory: ~/go/src/github.com/dicodingacademy/karsajobs #workdir untuk app karsajobs
+    docker: # Docker pada build-app-karsajobs
+      - image: cimg/go:1.15.1 # menggunakan image cimg/go dengan versi 1.15.1
+    steps: # steps untuk build-app-karsajobs
+      - checkout # melakukan checkout
+      - setup_remote_docker: # steps setup remote docker
+          version: 20.10.14 # menggunakan versi 20.10.14
+          docker_layer_caching: true # menggunakan docker_layer_caching dengan nilai true
+      - run: # run pada steps build
+          name: Build Docker Image # memberikan nama untuk perintah build image
+          command: docker build -t rachmandev/karsajobs:latest . # melakukan build image
+      - run: # run pada steps build
+          name: Login to Docker # memberikan nama untuk perintah Login ke github
+          command: docker login -u rachmandev -p dckr_pat_DiYRgP-Eqg9NRmzFq3u-7FfypkE # melakukan login ke github packages
+      - run: # run pada steps build
+          name: Push Image to Docker Hub # memberikan nama untuk push image
+          command: docker push rachmandev/karsajobs:latest # melakukan push image ke docker packages
 
-  dockerfile_lint:
-    executor: docker
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Run hadolint
-          command: docker run --rm --interactive hadolint/hadolint < Dockerfile
+  dockerfile_lint: # jobs kedua untuk build-app-karsajobs
+    executor: docker # menggunakan excecutors docker
+    steps: # steps untuk dockerfile_lint
+      - checkout # melakukan checkout
+      - setup_remote_docker # melakukan setup remote docker
+      - run: # run pada lint
+          name: Run hadolint # memberikan nama untuk docker hadolint
+          command: docker run --rm --interactive hadolint/hadolint < Dockerfile # menjalan hadolint
 
-  test-app:
-    working_directory: /go/src/github.com/dicodingacademy/karsajobs
-    docker:
-      - image: golang:1.15
-    steps:
-      - checkout
-      - run: 
-          name: Run Test GO
-          command: go test -v -short --count=1 $(go list ./...)
-workflows:
-  build-app-karsajobs_dockerfile-lint_test-app:
-    jobs:
-      - build-app-karsajobs
-      - dockerfile_lint
-      - test-app
+  test-app: # jobs ketiga untuk build-app-karsajobs
+    working_directory: /go/src/github.com/dicodingacademy/karsajobs #workdir untuk app karsajobs
+    docker: # docker pada test-app
+      - image: golang:1.15 # menggunakan image golang dengan versi 1.15
+    steps: # steps pada test-app
+      - checkout # melakukan checkout
+      - run: # run pada test-app
+          name: Run Test App # memberikan nama untuk test-app
+          command: go test -v -short --count=1 $(go list ./...) # menjalan test untuk app karsajobs
+
+workflows: # workflows pada circleCI
+  build-app-karsajobs_dockerfile-lint_test-app: # memberikan nama untuk workflows sesuai jobs
+    jobs: # jobs untuk workflows
+      - build-app-karsajobs # job workflows dari jobs build app karsajobs
+      - dockerfile_lint # job workflows dari jobs dockerfile lint
+      - test-app # job workflows dari jobs test app
