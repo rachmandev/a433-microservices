@@ -1,5 +1,5 @@
 # key name dengan name Build and Lint Docker untuk di tampilkan ke actions
-name: Build and Lint Docker 
+name: Build App Karsajobs-ui and Lint Docker 
 
 # key on dengan nilai push agar saat ada perubahan code action langsung run
 on:
