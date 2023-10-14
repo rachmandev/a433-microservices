@@ -14,7 +14,7 @@ jobs: # key Jobs pada github action
       - name: Build Image # key name dengan nilai Build image
         run: docker build -t ghcr.io/rachmandev/karsajobs-ui:latest . # melakukan build docker image dengan tag ghcr.io/rachmandev/karsajobs-ui:latest
       - name: Login to Github # key name dengan nilai Login to Github
-        run: docker login --username rachmandev --password ${{ secrets.GithubToken }} ghcr.io melakukan login ke github untuk push image
+        run: docker login --username rachmandev --password ${{ secrets.GithubToken }} ghcr.io #melakukan login ke github untuk push image
       - name: Push Image # key name dengan nilai Push Image
         run: docker push ghcr.io/rachmandev/karsajobs-ui:latest # melakukan push docker image ke github packages
 
