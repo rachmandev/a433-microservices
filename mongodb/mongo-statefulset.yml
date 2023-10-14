@@ -1,0 +1,53 @@
+apiVersion: apps/v1 #menggunakan apps kubernetes dengan versi api v1
+kind: StatefulSet # menggunakan object Statefulset
+metadata: #parameter untuk mendefinsikan object
+  name: mongodb # Nama pods yang akan digunakan
+  labels: #label pada object Statefulset
+    app: mongodb #menggunakan label dengan app mongodb
+    tier: database # menggunakan label dengan tier database
+spec: # tempat untuk menspesifikasikan resource
+  selector: #selector pada spec
+    matchLabels: #menggunakan selector dengan mathLabels
+      app: mongodb #menggunakan nama lebel app mongodb
+      tier: database #menggunakan tier frontend
+  serviceName: mongodb # menggunakan service name mongodb
+  replicas: 1 #untuk menentukan jumlah replicas
+  minReadySeconds: 10 #pods akan siap setelah 10 detik
+  template: #template pada spec
+    metadata: #parameter untuk mendefinsikan object
+      labels: #label pada metadata
+        app: mongodb #menggunakan nama lebel app mongodb
+        tier: database #menggunakan nama lebel app database
+    spec: #spec pada template
+      containers: #container pada spec
+      - image: mongo #menggunakan image mongo
+        name: mongodb #nama yang akan digunakan untuk pods/object
+        imagePullPolicy: "Always" #kebijakan penarikan image akan selalu "always"
+        ports: # port pada container
+        - containerPort: 27017 # port default yang akan digunakan mongoDB
+          name: mongodb #nama yang akan terhubung dengan service
+        env: # environment pada aplikasi
+        - name: MONGO_INITDB_ROOT_USERNAME_FILE #key environment variable untuk username root
+          value: /etc/mongo-credentials/MONGO_ROOT_USERNAME #value environment variable untuk username root yang disimpan di file
+        - name: MONGO_INITDB_ROOT_PASSWORD_FILE #key environment variable untuk password root
+          value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD #value environment variable untuk password root yang disimpan di file
+        volumeMounts: #volume mount pada container/pods mongodb
+        - name: mongo-persistent-storage #nama volume mount untuk persisten storage
+          mountPath: /data/db #directory atau path untuk penyimpanan file data mongoDB
+        - name: mongo-configmap #nama volume mount untuk confgimap
+          mountPath: /config  #directory atau path untuk penyimpanan file konfigurasi mongoDB
+        - name: mongo-secret #nama volume mount untuk secret
+          mountPath: /etc/mongo-credentials  #directory atau path untuk penyimpanan file credentials mongoDB
+      volumes: #volume pada untuk MongoDB
+      - name: mongo-persistent-storage #nama volume untuk persisten storage
+        persistentVolumeClaim: #PVC pada volumes
+          claimName: mongo-pv-claim #nama untuk claim name
+      - name: mongo-configmap #nama volume untuk configmap
+        configMap: #configmap pada volumes
+          name: mongo-configmap #nama volume untuk configmap
+          items: #item untuk configmap
+            - key: mongo.conf #nama key/file untuk configmap adalah mongo.conf
+              path: mongo.conf #nama path untuk configmap adalah mongo.conf
+      - name: mongo-secret #nama volume untuk secret
+        secret: #secret untuk di volume mongo-secret
+          secretName: mongo-secret #nama yang digunakan untuk nama secret

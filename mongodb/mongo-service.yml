@@ -1,0 +1,15 @@
+apiVersion: v1 # Menggunakan kubernetes api version 1
+kind: Service # Jenis object Kubernetes yang akan dibuat yaitu Service
+metadata: # Parameter untuk mendefinisikan object
+  name: mongodb #nama untuk service mongodb
+  labels: # label pada metadata
+    app: mongodb # menggunakan label app dengan nama mongodb
+spec: # tempat untuk menspesifikasikan resource
+  ports: # port pada object Service
+    - port: 27017 # Menggunakan Default Port 27107 yang akan dibuka oleh Service untuk akses ke MongoDB
+      name: mongodb #nama untuk service
+      targetPort: 27017 #Menargetkan port untuk service mongodb ke 27017
+  selector: # selector pada object Service
+    app: mongodb # menggunakan selector dengan app mongodb
+    tier: database # menggunakan selector dengan tier database
+  clusterIP: None # mengatur ClusterIp menjadi none agar membuat service berjalan dengan tipe headless

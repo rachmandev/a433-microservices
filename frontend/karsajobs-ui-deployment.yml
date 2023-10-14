@@ -1,0 +1,26 @@
+apiVersion: apps/v1 #menggunakan apps kubernetes dengan versi api v1
+kind: Deployment #menggunakan object deployment
+metadata: #parameter untuk mendefinsikan objeck
+  name: karsajobs-frontend # Nama pods yang akan digunakan
+  labels: #label pada object deployment
+    app: karsajobs #menggunakan label dengan app karsajobs
+    tier: frontend # menggunakan label dengan tier frontend
+spec: # tempat untuk menspesifikasikan resource
+  replicas: 1 #untuk menentukan jumlah replicas
+  selector: #selector pada spec
+    matchLabels: #menggunakan selector dengan mathLabels
+      tier: frontend  #menggunakan tier frontend
+  template: # template untuk spec
+    metadata: #parameter untuk mendefinisikan object
+      labels: #label pada spec
+        app: karsajobs #menggunakan label dengan nama app karsajobs
+        tier: frontend #menggunkan label dengan nama tier frontend
+    spec: #spec pada template
+        containers: # menggunakan container untuk object deployment
+        - name: karsajobs-frontend #nama yang akan digunakan oleh object
+          image: ghcr.io/rachmandev/karsajobs-ui:latest # menggunakan docker image karsajobs-ui yang di ambil dari github packages
+          ports: # port pada container
+          - containerPort: 8000 #port yang akan digunakan aplikasi
+          env: #environment untuk aplikasi
+            - name: VUE_APP_BACKEND #environment variable yang akan digunakan aplikasi
+              value: http://127.0.0.1:32100 #alamat URL yang akan digunakan untuk menghubungkan aplikai ke backend

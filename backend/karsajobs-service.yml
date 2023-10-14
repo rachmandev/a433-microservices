@@ -1,0 +1,14 @@
+apiVersion: v1 #menggunakan Kubernetes API version 1
+kind: Service #Jenis object kubernetes yang akan dibuat adalah service
+metadata: #parameter untuk mendefinisikan object
+  name: karsajobs-backend #nama Service yang akan digunakan
+  labels: #labels pada parameter metadata
+    app: karsajobs #menggunakan label dengan app karsajobs
+spec: #untuk mendefinisikan spesifikasi pada object
+  ports: #port pada object yang akan digunakan
+  - port: 8080  # Menggunakan Port 8000 untuk yang akan dibuka oleh Service untuk akses ke Karsajobs-ui
+    nodePort: 32100 #custom nodePort yang akan digunakan
+  selector: # selector pada object Service
+    app: karsajobs # menggunakan selector dengan app karsajobs
+    tier: backend # menggunakan selector dengan tier frontend
+  type: NodePort # Jenis Service yang akan digunakan adalah nodePort

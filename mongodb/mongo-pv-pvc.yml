@@ -1,0 +1,29 @@
+apiVersion: v1 # Menggunakan kubernetes api version 1
+kind: PersistentVolume # Jenis object Kubernetes yang akan dibuat yaitu persisten volume
+metadata: # Parameter untuk mendefinisikan object
+  name: mongo-pv #nama untuk object persisten volume
+  labels: # label pada metadata
+    app: mongodb # menggunakan label app dengan nama mongodb
+    tier: database # menggunakan tier dengan nama database
+spec: # tempat untuk menspesifikasikan resource
+  capacity: #kapasitasi untuk penyimapan
+    storage: 2Gi #kapasitas penyimpanan data yang diberikan sebesar 2 GB
+  accessModes: #akses untuk penyimapan
+    - ReadWriteOnce #akses yang diberikan Baca tulis
+  hostPath: #directory host untuk menyimpan
+    path: /data/db #directory untuk menyimpan file 
+  storageClassName: manual # nama yang digunakan untuk kelas penyimpanan adalah manual
+---
+apiVersion: v1 # Menggunakan kubernetes api version 1
+kind: PersistentVolumeClaim # Jenis object Kubernetes yang akan dibuat yaitu persisten volume claim
+metadata: # Parameter untuk mendefinisikan object
+  name: mongo-pv-claim #nama untuk object persisten volume Claim
+  labels: # label pada metadata
+    app: mongodb # menggunakan label app dengan nama mongodb
+spec: # tempat untuk menspesifikasikan resource
+  accessModes: #akses untuk penyimapan
+    - ReadWriteOnce #akses yang diberikan Baca tulis
+  resources: #resource pada PVC
+    requests: # untuk melakukan permintaan
+      storage: 2Gi #permintaan kapasitas penyimpanan untuk data sebesar 2 GB
+  storageClassName: manual # nama yang digunakan untuk kelas penyimpanan adalah manual
