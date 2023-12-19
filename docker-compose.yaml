@@ -1,0 +1,45 @@
+services:
+  rabbitmq: #container rabbitmq
+    image: rabbitmq:3.11-management #menggunakan image rabbitmq versi 3.11
+    container_name: 'rabbitmq' #nama untuk container
+    ports:
+        - 5673:5672 #port yang akan digunakan rabbitmq
+        - 15673:15672 #port yang akan digunakan rabbitmq
+    volumes:
+        - ~/.rabbitmq/data/:/var/lib/rabbitmq/ #volume/directory untuk menyimpan data 
+        - ~/.rabbitmq/log/:/var/log/rabbitmq/ #volume/directory untuk menyimpan data
+    networks:
+        - e-commerce_network #network yang akan digunakan
+  order-service: #container order service
+    image: ghcr.io/rachmandev/order-service:latest #menggunakan image order service dari github pakages rachmandev
+    container_name: 'order-service' #nama untuk container
+    ports:
+      - "3000:3000" #port yang akan digunakan order-service
+    volumes:
+      - .:/src #volume untuk order service
+    depends_on:
+      - "rabbitmq" #container akan berjalan normal setelah container rabbitmq berjalan
+    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- node index.js' #command untuk menunggu rabbitmq siap untuk digunakan
+    environment:
+      PORT: 3000 #port untuk environment
+      AMQP_URL: amqp://guest:guest@rabbitmq:5672 #url untuk environment
+    networks:
+      - e-commerce_network #network yang akan digunakan
+  shipping-service: #container shipping-service
+    image: ghcr.io/rachmandev/shipping-service:latest #menggunakan image order service dari github pakages rachmandev
+    container_name: 'shipping-service' #nama untuk container
+    ports:
+      - "3001:3001" #port yang akan digunakan order-service
+    volumes:
+      - .:/src #volume untuk shipping-service
+    depends_on:
+      - "rabbitmq" #container akan berjalan normal setelah container rabbitmq berjalan
+    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- node index.js' #command untuk menunggu rabbitmq siap untuk digunakan
+    environment:
+      PORT: 3001 #port untuk environment
+      AMQP_URL: amqp://guest:guest@rabbitmq:5672 #url untuk environment
+    networks:
+      - e-commerce_network #network yang akan digunakan
+networks:
+  e-commerce_network: #membuat network
+    driver: bridge #menggunakan network bridge
