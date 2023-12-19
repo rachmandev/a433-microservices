@@ -1,0 +1,18 @@
+apiVersion: v1 # Menggunakan kubernetes api version 1
+kind: Service # Jenis object Kubernetes yang akan dibuat yaitu Service
+metadata: # Parameter untuk mendefinisikan object
+  name: istio-rabbitmq-service #nama untuk service rabbitmq
+  labels: # label pada metadata
+    app: istio-rabbitmq-service # menggunakan label app dengan nama rabbitmq
+spec: # tempat untuk menspesifikasikan resource
+  selector: # selector pada object Service
+    app: istio-rabbitmq-service # menggunakan selector dengan app rabbitmq
+  type: ClusterIP
+  ports: # port pada object Service
+  - name: amqp #nama untuk service
+    port: 5672 # Menggunakan Default Port 27107 yang akan dibuka oleh Service untuk akses ke rabbitmq
+    targetPort: 5672 #Menargetkan port untuk service rabbitmq ke 27017
+    # nodePort: 32610 #menggunakan node port custom
+  - name: http #nama untuk service
+    port: 15672 # Menggunakan Default Port 27107 yang akan dibuka oleh Service untuk akses ke rabbitmq
+    targetPort: 15672 #Menargetkan port untuk service rabbitmq ke 27017

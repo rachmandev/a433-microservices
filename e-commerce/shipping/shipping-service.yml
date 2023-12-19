@@ -1,0 +1,14 @@
+apiVersion: v1 #menggunakan Kubernetes API version 1
+kind: Service #Jenis object kubernetes yang akan dibuat adalah service
+metadata: #parameter untuk mendefinisikan object
+  name: shipping-service #nama Service yang akan digunakan
+  labels: #labels pada parameter metadata
+    app: shipping-service #menggunakan label dengan app shipping-service
+spec: #untuk mendefinisikan spesifikasi pada object
+  selector: # selector pada object Service
+    app: shipping-service # menggunakan selector dengan app shipping-services
+  type: NodePort # Jenis Service yang akan digunakan adalah nodePort
+  ports: #port pada object yang akan digunakan
+  - port: 3001  # Menggunakan Port 3001 untuk yang akan dibuka oleh Service untuk akses ke shipping-service
+    targetPort: 3001 # menargetkan port ke 3001
+    nodePort: 32400 #Menggunakan custom nodePort dengan port 32400

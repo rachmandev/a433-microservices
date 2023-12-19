@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3 #menggunakan api version networking istio 1 alpha
+kind: Gateway #menggunakan Object Gateway
+metadata: #parameter untuk mendefinsikan objeck
+  name: e-commerce-gateway #nama object yang akan digunakan
+  labels: #label pada object deployment
+    app: e-commerce-gateway  # menggunakan label dengan app e-commerce-gateway
+spec: # tempat untuk menspesifikasikan resource
+  selector: #selector pada spec
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port: #port pada ingess gateway
+      number: 80 #menggunakan port 80
+      name: http #memberikan nama untuk gateway adalah HTTP
+      protocol: HTTP #protocol yang digunakn HTTP
+    hosts:
+    - "*" #bisa menggunakan semua host

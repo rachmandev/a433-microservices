@@ -1,0 +1,28 @@
+apiVersion: apps/v1 #mengunnakan apps kubernetes dengan versi api v1
+kind: Deployment #menggunakan object deployment
+metadata: #parameter untuk mendefinsikan objeck
+  name: order-service # Nama pods yang akan digunakan
+  labels: #label pada object deployment
+    app: order-service # menggunakan label dengan app order-service
+    # tier: order # menggunakan label dengan tier backend
+spec: # tempat untuk menspesifikasikan resource
+  minReadySeconds: 30 #pods akan siap setelah 10 detik
+  replicas: 1 #untuk menentukan jumlah replicas
+  selector: #selector pada spec
+    matchLabels: #menggunakan selector dengan mathLabels
+      app: order-service
+  template: # template untuk spec
+    metadata: #parameter untuk mendefinisikan object
+      labels: #label pada spec
+        app: order-service #menggunakan label dengan nama app order-service
+    spec: #spec pada template
+      containers: # menggunakan container untuk object deployment
+      - name: order-service #nama yang akan digunakan oleh object
+        image: ghcr.io/rachmandev/order-service:latest # menggunakan docker image order-service yang di ambil dari github packages
+        ports: # port pada container
+          - containerPort: 3000 #port yang akan digunakan aplikasi
+        env: #environment untuk aplikasi
+          - name: PORT #environment variable yang akan digunakan aplikasi
+            value: "3000" #port yang akan digunakan aplikasi
+          - name: AMQP_URL #environment variable yang akan digunakan aplikasi
+            value: "amqp://guest:guest@rabbitmq-service.default.svc.cluster.local:5672" #host yang akan digunakan aplikasi untuk login ke rabbitmq dengan username guest dan password guest dengan port 5672

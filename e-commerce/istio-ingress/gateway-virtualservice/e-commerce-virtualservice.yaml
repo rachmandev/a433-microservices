@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3 #menggunakan api version networking istio 1 alpha
+kind: VirtualService #menggunakan Object Virtual Service
+metadata: #parameter untuk mendefinsikan objeck
+  name: e-commerce #nama object yang akan digunakan
+spec:
+  hosts:
+  - "*" #bisa menggunakan semua host
+  gateways:
+  - e-commerce-gateway #menggunakan gateway e-commerce-gateway
+  http:
+  - match:
+    - uri:
+        exact: /order #menggunkan uri /order agar terhubung ke order-service
+    route:
+    - destination:
+        host: istio-order-service #menggunkan host istio-order-service agar terhubung ke order-service
+        port:
+          number: 3000 #menggunakan port 3000 order-service

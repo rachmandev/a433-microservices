@@ -1,0 +1,26 @@
+apiVersion: apps/v1 #mengunnakan apps kubernetes dengan versi api v1
+kind: Deployment #menggunakan object deployment
+metadata: #parameter untuk mendefinsikan objeck
+  name: shipping-service # Nama pods yang akan digunakan
+  labels: #label pada object deployment
+    app: shipping-service # menggunakan label dengan app shipping-services
+spec: # tempat untuk menspesifikasikan resource
+  replicas: 1 #untuk menentukan jumlah replicas
+  selector: #selector pada spec
+    matchLabels: #menggunakan selector dengan mathLabels
+      app: shipping-service #menggunakan app shipping-service
+  template: # template untuk spec
+    metadata: #parameter untuk mendefinisikan object
+      labels: #label pada spec
+        app: shipping-service #menggunakan label dengan nama app shipping-services
+    spec: #spec pada template
+      containers: # menggunakan container untuk object deployment
+      - name: shipping-service #nama yang akan digunakan oleh object
+        image: ghcr.io/rachmandev/shipping-service:latest # menggunakan docker image shipping-service yang di ambil dari github packages
+        ports: # port pada container
+          - containerPort: 3001 #port yang akan digunakan aplikasi
+        env: #environment untuk aplikasi
+          - name: PORT #environment variable yang akan digunakan aplikasi
+            value: "3001" #port yang akan digunakan aplikasi
+          - name: AMQP_URL #environment variable yang akan digunakan aplikasi
+            value: "amqp://guest:guest@rabbitmq-service:5672" #host yang akan digunakan aplikasi untuk login ke rabbitmq dengan username guest dan password guest dengan port 5672

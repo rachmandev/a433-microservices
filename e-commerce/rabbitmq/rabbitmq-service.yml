@@ -1,0 +1,19 @@
+apiVersion: v1 # Menggunakan kubernetes api version 1
+kind: Service # Jenis object Kubernetes yang akan dibuat yaitu Service
+metadata: # Parameter untuk mendefinisikan object
+  name: rabbitmq-service #nama untuk service rabbitmq
+  labels: # label pada metadata
+    app: rabbitmq-service # menggunakan label app dengan nama rabbitmq
+spec: # tempat untuk menspesifikasikan resource
+  selector: # selector pada object Service
+    app: rabbitmq-service # menggunakan selector dengan app rabbitmq
+  type: NodePort
+  ports: # port pada object Service
+  - name: amqp #nama untuk service
+    port: 5672 # Menggunakan Default Port 27107 yang akan dibuka oleh Service untuk akses ke rabbitmq
+    targetPort: 5672 #Menargetkan port untuk service rabbitmq ke 5673
+    nodePort: 32100 #menggunakan Custom nodePort dengan port 32100
+  - name: http #nama untuk service
+    port: 15672 # Menggunakan Default Port 27107 yang akan dibuka oleh Service untuk akses ke rabbitmq
+    targetPort: 15672 #Menargetkan port untuk service rabbitmq ke 15672
+    nodePort: 32200 #Menggunakan Custom nodePort dengan port 32200

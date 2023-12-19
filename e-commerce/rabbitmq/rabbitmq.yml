@@ -1,0 +1,56 @@
+apiVersion: apps/v1 #menggunakan apps kubernetes dengan versi api v1
+kind: StatefulSet # menggunakan object Statefulset
+metadata: #parameter untuk mendefinsikan object
+  name: rabbitmq-service # Nama pods yang akan digunakan
+  labels: #label pada object Statefulset
+    app: rabbitmq-service #menggunakan label dengan app rabbitmq
+spec: # tempat untuk menspesifikasikan resource
+  selector: #selector pada spec
+    matchLabels: #menggunakan selector dengan mathLabels
+      app: rabbitmq-service #menggunakan nama lebel app rabbitmq
+  serviceName: rabbitmq-service # menggunakan service name rabbitmq
+  replicas: 1 #untuk menentukan jumlah replica
+  template: #template pada spec
+    metadata: #parameter untuk mendefinsikan object
+      labels: #label pada metadata
+        app: rabbitmq-service #menggunakan nama lebel app rabbitmq
+    spec: #spec pada template
+      containers: #container pada spec
+      - image: rabbitmq:3.11-management #menggunakan image rabbitmq dengan versi 3.11
+        name: rabbitmq #nama yang akan digunakan untuk pods/object
+        imagePullPolicy: "Always" #kebijakan penarikan image akan selalu "always"
+        ports: # port pada container
+        - name: amqp #nama yang akan terhubung dengan service
+          containerPort: 5672 # port default yang akan digunakan rabbitmq
+          protocol: TCP #menggunakan protocol TCP
+        - name: http #nama yang akan terhubung dengan service
+          containerPort: 15672 # port default yang akan digunakan rabbitmq
+          protocol: TCP #menggunakan protocol TCP
+        volumeMounts: #volume mount pada container/pods rabbitmq
+        - name: rabbitmq-data #nama volume mount untuk persisten storage
+          mountPath: /rabbitmq/data #directory atau path untuk penyimpanan file data rabbitmq
+        - name: rabbitmq-log #nama volume mount untuk confgimap
+          mountPath: /rabbitmq/log  #directory atau path untuk penyimpanan file konfigurasi rabbitmq
+  volumeClaimTemplates: # Jenis object Kubernetes yang akan dibuat yaitu persisten volume claim
+  - metadata: # Parameter untuk mendefinisikan object
+      name: rabbitmq-data #nama untuk object persisten volume Claim
+      labels: # label pada metadata
+        app: rabbitmq-service # menggunakan label app dengan nama rabbitmq
+    spec: # tempat untuk menspesifikasikan resource
+      accessModes: #akses untuk penyimapan
+        - ReadWriteOnce #akses yang diberikan Baca tulis
+      resources: #resource pada VCT
+        requests: # untuk melakukan permintaan
+          storage: 2Gi #permintaan kapasitas penyimpanan untuk data sebesar 2 GB
+      storageClassName: standard # nama yang digunakan untuk kelas penyimpanan adalah standard
+  - metadata: # Parameter untuk mendefinisikan object
+      name: rabbitmq-log #nama untuk object persisten volume Claim
+      labels: # label pada metadata
+        app: rabbitmq # menggunakan label app dengan nama rabbitmq
+    spec: # tempat untuk menspesifikasikan resource
+      accessModes: #akses untuk penyimapan
+        - ReadWriteOnce #akses yang diberikan Baca tulis
+      resources: #resource pada VCT
+        requests: # untuk melakukan permintaan
+          storage: 2Gi #permintaan kapasitas penyimpanan untuk data sebesar 2 GB
+      storageClassName: standard # nama yang digunakan untuk kelas penyimpanan adalah standard

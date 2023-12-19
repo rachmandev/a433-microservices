@@ -1,0 +1,13 @@
+apiVersion: v1 #menggunakan Kubernetes API version 1
+kind: Service #Jenis object kubernetes yang akan dibuat adalah service
+metadata: #parameter untuk mendefinisikan object
+  name: istio-order-service #nama Service yang akan digunakan
+  labels: #labels pada parameter metadata
+    app: istio-order-service #menggunakan label dengan app istio-order-service
+spec: #untuk mendefinisikan spesifikasi pada object
+  selector: # selector pada object Service
+    app: istio-order-service # menggunakan selector dengan app istio-order-service
+  type: ClusterIP # Jenis Service yang akan digunakan adalah ClusterIP
+  ports: #port pada object yang akan digunakan
+  - port: 3000  # Menggunakan Port 3000 untuk yang akan dibuka oleh Service untuk akses ke istio-order-service
+    targetPort: 3000 # menargetkan port ke 3000
